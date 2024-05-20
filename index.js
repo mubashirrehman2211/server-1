@@ -12,8 +12,9 @@ let items = [];
 const PORT = process.env.PORT || 5555;
 
 let jsonData = '';
+
 const extractItems = async (page) => {
-    let maps_data = await page.evaluate(() => {
+    return await page.evaluate(() => {
         return Array.from(document.querySelectorAll(".Nv2PK")).map((el) => {
             const link = el.querySelector("a.hfpxzc").getAttribute("href");
             const image = el.querySelector(".FQ2IWe img").getAttribute('src');
@@ -36,8 +37,9 @@ const extractItems = async (page) => {
             };
         });
     });
-    return maps_data;
 }
+
+const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 const scrollPage = async (page, scrollContainer, itemTargetCount) => {
 
@@ -62,8 +64,10 @@ const scrollPage = async (page, scrollContainer, itemTargetCount) => {
         waitUntil: 'domcontentloaded', timeout: 60000
     });
 
+    await sleep(2000);
+
     await scrollPage(page, ".miFGmb", 2)
-    console.log(items.img)
+    console.log(items)
 })();
 
 

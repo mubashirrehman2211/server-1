@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5555;
 let jsonData = '';
 
 const extractItems = async (page) => {
-    return await page.evaluate(() => {
+    let maps_data = await page.evaluate(() => {
         return Array.from(document.querySelectorAll(".Nv2PK")).map((el) => {
             const link = el.querySelector("a.hfpxzc").getAttribute("href");
             const image = el.querySelector(".FQ2IWe img").getAttribute('src');
@@ -37,6 +37,7 @@ const extractItems = async (page) => {
             };
         });
     });
+    return maps_data;
 }
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));

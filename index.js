@@ -16,7 +16,7 @@ const extractItems = async (page) => {
     let maps_data = await page.evaluate(() => {
         return Array.from(document.querySelectorAll(".Nv2PK")).map((el) => {
             const link = el.querySelector("a.hfpxzc").getAttribute("href");
-            const image = el.querySelector(".FQ2IWe img").getAttributeNode('src');
+            const image = el.querySelector(".FQ2IWe img").getAttribute('src');
             return {
                 title: el.querySelector(".fontHeadlineSmall")?.textContent.trim(),
                 avg_rating: el.querySelector(".MW4etd")?.textContent.trim(),

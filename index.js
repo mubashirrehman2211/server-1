@@ -122,7 +122,5 @@ app.get("/", (request, response) => {
 });
 
 app.get("/data", (request, response) => {
-  setTimeout(() => {
-    response.send(data);
-  }, 10000);
+  response.send(data);
 });

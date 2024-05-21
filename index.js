@@ -93,7 +93,7 @@ const scrollPage = async (page, scrollContainer, itemTargetCount) => {
   return items;
 };
 
-const getData = async () => {
+async function getData() {
   const broswer = await puppeteer.launch({ headless: false });
   const page = await broswer.newPage();
   // await page.screenshot({path: ''});
@@ -114,14 +114,13 @@ const getData = async () => {
 
   await scrollPage(page, ".miFGmb", 2);
   console.log(items);
-};
+}
 
 app.get("/", (request, response) => {
   response.send("API is Running");
 });
 
 app.get("/status", (request, response) => {
+  getData();
   response.send(items);
 });
-
-getData();

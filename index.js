@@ -115,8 +115,6 @@ async function getData() {
   await browser.close();
 }
 
-getData();
-
 app.get("/", (request, response) => {
   response.send("API Called");
 });
@@ -124,3 +122,5 @@ app.get("/", (request, response) => {
 app.get("/data", (request, response) => {
   response.send(data);
 });
+
+getData();

@@ -117,11 +117,11 @@ async function getData() {
 }
 
 app.get("/", (request, response) => {
-  response.send("API is Running");
-});
-
-app.get("/status", (request, response) => {
+  getData();
   response.send(items);
 });
 
-getData();
+app.get("/status", (request, response) => {
+  getData();
+  response.send(items);
+});

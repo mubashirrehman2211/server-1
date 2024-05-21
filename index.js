@@ -121,6 +121,7 @@ app.get("/", (request, response) => {
 });
 
 app.get("/status", (request, response) => {
-  getData();
   response.send(items);
 });
+
+getData();

@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const { port } = require("./package.json");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -11,23 +10,11 @@ let items = [];
 
 const PORT = process.env.PORT || 5555;
 
-let jsonData = "";
-
 app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
 });
 
-async function get(page) {
-  await page.goto(
-    "https://www.google.com/maps/search/restaurants/@33.6080132,73.0178477,11z",
-    {
-      waitUntil: "domcontentloaded",
-      timeout: 60000,
-    }
-  );
-}
-
-const extractItems = async (page) => {
+async function extractItems(page) {
   let maps_data = await page.evaluate(() => {
     return Array.from(document.querySelectorAll(".Nv2PK")).map((el) => {
       const link = el.querySelector("a.hfpxzc").getAttribute("href");
@@ -83,11 +70,11 @@ const extractItems = async (page) => {
     });
   });
   return maps_data;
-};
+}
 
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
-const scrollPage = async (page, scrollContainer, itemTargetCount) => {
+async function scrollPage(page, scrollContainer, itemTargetCount) {
   let previousHeight = await page.evaluate(
     `document.querySelector("${scrollContainer}").scrollHeight`
   );
@@ -101,17 +88,23 @@ const scrollPage = async (page, scrollContainer, itemTargetCount) => {
     );
   }
   return items;
-};
+}
 
 async function getData() {
   const broswer = await puppeteer.launch({ headless: false });
   const page = await broswer.newPage();
-  // await page.screenshot({path: ''});
   await page.setViewport({
     width: 1300,
     height: 900,
   });
-  get(page);
+
+  await page.goto(
+    "https://www.google.com/maps/search/restaurants/@33.6080132,73.0178477,11z",
+    {
+      waitUntil: "domcontentloaded",
+      timeout: 60000,
+    }
+  );
 
   await sleep(2000);
 

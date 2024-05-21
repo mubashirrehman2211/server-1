@@ -116,14 +116,18 @@ async function getData() {
   await browser.close();
 }
 
-app.get("/", (request, response) => {
-  response.send("API Called");
-});
-
-app.get("/data", (request, response) => {
+function trying() {
   try {
     getData();
   } catch (e) {
     console.log(e);
   }
+}
+
+app.get("/", (request, response) => {
+  response.send("API Called");
+});
+
+app.get("/data", (request, response) => {
+  response.send(trying());
 });

@@ -110,7 +110,8 @@ async function getData() {
 
   await sleep(5000);
 
-  data = await scrollPage(page, ".miFGmb", 2);
+  // data = await scrollPage(page, ".miFGmb", 2);
+  data = await extractItems(page);
   console.log(data);
   await browser.close();
 }
@@ -120,5 +121,9 @@ app.get("/", (request, response) => {
 });
 
 app.get("/data", (request, response) => {
-  response.send(data);
+  try {
+    getData();
+  } catch (e) {
+    response.send("API CALLING IN DATA FIELD");
+  }
 });

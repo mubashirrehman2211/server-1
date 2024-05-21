@@ -124,6 +124,6 @@ app.get("/data", (request, response) => {
   try {
     getData();
   } catch (e) {
-    response.send("API CALLING IN DATA FIELD");
+    console.log(e);
   }
 });

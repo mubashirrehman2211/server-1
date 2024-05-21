@@ -115,14 +115,12 @@ async function getData() {
   await browser.close();
 }
 
+getData();
+
 app.get("/test", (request, response) => {
   response.send("API Called");
 });
 
 app.get("/", (request, response) => {
-  getData();
-  response.send("Data Fetching....");
-  setTimeout(() => {
-    response.send(data);
-  }, 5000);
+  response.send(data);
 });

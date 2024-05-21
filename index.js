@@ -9,9 +9,13 @@ const puppeteer = require("puppeteer");
 
 let items = [];
 
-const PORT = process.env.PORT || 6666;
+const PORT = process.env.PORT || 5555;
 
 let jsonData = "";
+
+app.listen(PORT, () => {
+  console.log("Server Listening on PORT:", PORT);
+});
 
 const extractItems = async (page) => {
   let maps_data = await page.evaluate(() => {
@@ -111,10 +115,6 @@ const scrollPage = async (page, scrollContainer, itemTargetCount) => {
   await scrollPage(page, ".miFGmb", 2);
   console.log(items);
 })();
-
-app.listen(PORT, () => {
-  console.log("Server Listening on PORT:", PORT);
-});
 
 app.get("/status", (request, response) => {
   response.send(items);

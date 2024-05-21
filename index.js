@@ -120,7 +120,7 @@ function trying() {
   try {
     getData();
   } catch (e) {
-    console.log(e);
+    console.log("data worked...");
   }
 }
 

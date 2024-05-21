@@ -120,7 +120,7 @@ function trying() {
   try {
     getData();
   } catch (e) {
-    console.log("data worked...");
+    console.log(e, "error");
   }
 }
 
@@ -129,6 +129,5 @@ app.get("/", (request, response) => {
 });
 
 app.get("/data", (request, response) => {
-  trying();
-  response.send(data);
+  response.send(trying());
 });

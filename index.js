@@ -117,8 +117,7 @@ async function getData() {
 }
 
 app.get("/", (request, response) => {
-  getData();
-  response.send(items);
+  response.send("API Called");
 });
 
 app.get("/status", (request, response) => {

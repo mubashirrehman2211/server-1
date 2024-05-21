@@ -129,5 +129,6 @@ app.get("/", (request, response) => {
 });
 
 app.get("/data", (request, response) => {
-  response.send(trying());
+  trying();
+  response.send(data);
 });

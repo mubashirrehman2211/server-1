@@ -110,11 +110,15 @@ const getData = async () => {
     }
   );
 
-  await sleep(2000);
+  await sleep(10000);
 
   await scrollPage(page, ".miFGmb", 2);
   console.log(items);
 };
+
+app.get("/", (request, response) => {
+  response.send("API is Running");
+});
 
 app.get("/status", (request, response) => {
   response.send(items);

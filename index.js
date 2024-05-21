@@ -93,7 +93,7 @@ const scrollPage = async (page, scrollContainer, itemTargetCount) => {
   return items;
 };
 
-(async () => {
+const getData = async () => {
   const broswer = await puppeteer.launch({ headless: false });
   const page = await broswer.newPage();
   // await page.screenshot({path: ''});
@@ -110,12 +110,14 @@ const scrollPage = async (page, scrollContainer, itemTargetCount) => {
     }
   );
 
-  await sleep(10000);
+  await sleep(2000);
 
   await scrollPage(page, ".miFGmb", 2);
   console.log(items);
-})();
+};
 
 app.get("/status", (request, response) => {
   response.send(items);
 });
+
+getData();

@@ -6,7 +6,7 @@ app.use(cors());
 
 const puppeteer = require("puppeteer");
 
-let items = [];
+let data = [];
 
 const PORT = process.env.PORT || 5555;
 
@@ -75,6 +75,7 @@ async function extractItems(page) {
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
 async function scrollPage(page, scrollContainer, itemTargetCount) {
+  let items = [];
   let previousHeight = await page.evaluate(
     `document.querySelector("${scrollContainer}").scrollHeight`
   );
@@ -86,13 +87,14 @@ async function scrollPage(page, scrollContainer, itemTargetCount) {
     await page.evaluate(
       `document.querySelector("${scrollContainer}").scrollHeight > ${previousHeight}`
     );
+    await sleep(2000);
   }
   return items;
 }
 
 async function getData() {
-  const broswer = await puppeteer.launch({ headless: false });
-  const page = await broswer.newPage();
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
   await page.setViewport({
     width: 1300,
     height: 900,
@@ -106,17 +108,19 @@ async function getData() {
     }
   );
 
-  await sleep(2000);
+  await sleep(5000);
 
-  await scrollPage(page, ".miFGmb", 2);
-  console.log(items);
+  data = await scrollPage(page, ".miFGmb", 2);
+  console.log(data);
+  await browser.close();
 }
 
-app.get("/", (request, response) => {
+getData();
+
+app.get("/test", (request, response) => {
   response.send("API Called");
 });
 
-app.get("/status", (request, response) => {
-  getData();
-  response.send(items);
+app.get("/", (request, response) => {
+  response.send(data);
 });

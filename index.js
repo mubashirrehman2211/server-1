@@ -122,5 +122,3 @@ app.get("/", (request, response) => {
 app.get("/data", (request, response) => {
   response.send(data);
 });
-
-getData();

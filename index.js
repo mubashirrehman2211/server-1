@@ -17,6 +17,16 @@ app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
 });
 
+async function get(page) {
+  await page.goto(
+    "https://www.google.com/maps/search/restaurants/@33.6080132,73.0178477,11z",
+    {
+      waitUntil: "domcontentloaded",
+      timeout: 60000,
+    }
+  );
+}
+
 const extractItems = async (page) => {
   let maps_data = await page.evaluate(() => {
     return Array.from(document.querySelectorAll(".Nv2PK")).map((el) => {
@@ -101,16 +111,9 @@ async function getData() {
     width: 1300,
     height: 900,
   });
+  get(page);
 
-  await page.goto(
-    "https://www.google.com/maps/search/restaurants/@33.6080132,73.0178477,11z",
-    {
-      waitUntil: "domcontentloaded",
-      timeout: 60000,
-    }
-  );
-
-  await sleep(10000);
+  await sleep(2000);
 
   await scrollPage(page, ".miFGmb", 2);
   console.log(items);

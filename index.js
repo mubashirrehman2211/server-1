@@ -117,10 +117,12 @@ async function getData() {
 
 getData();
 
-app.get("/test", (request, response) => {
+app.get("/", (request, response) => {
   response.send("API Called");
 });
 
-app.get("/", (request, response) => {
-  response.send(data);
+app.get("/data", (request, response) => {
+  setTimeout(() => {
+    response.send(data);
+  }, 10000);
 });

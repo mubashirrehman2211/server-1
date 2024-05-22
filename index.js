@@ -95,6 +95,10 @@ async function scrollPage(page, scrollContainer, itemTargetCount) {
 async function getData() {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
+  await page.setExtraHTTPHeaders({
+    "User-Agent":
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4882.194 Safari/537.36",
+  });
   await page.setViewport({
     width: 1300,
     height: 900,

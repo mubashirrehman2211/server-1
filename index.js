@@ -124,7 +124,7 @@ function trying() {
   try {
     getData();
   } catch (e) {
-    console.log(data, "data-2");
+    console.log(e, "error");
   }
 }
 

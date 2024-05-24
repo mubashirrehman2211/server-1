@@ -6,7 +6,12 @@ app.use(cors());
 
 const puppeteer = require("puppeteer");
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
 let data = [];
+
+let city = {};
 
 const PORT = process.env.PORT || 5555;
 
@@ -17,8 +22,8 @@ app.listen(PORT, () => {
 async function extractItems(page) {
   let maps_data = await page.evaluate(() => {
     return Array.from(document.querySelectorAll(".Nv2PK")).map((el) => {
-      const link = el.querySelector("a.hfpxzc").getAttribute("href");
-      const image = el.querySelector(".FQ2IWe img").getAttribute("src");
+      const link = el.querySelector("a.hfpxzc")?.getAttribute("href");
+      const image = el.querySelector(".FQ2IWe img")?.getAttribute("src");
       return {
         title: el.querySelector(".fontHeadlineSmall")?.textContent.trim(),
         avg_rating: el.querySelector(".MW4etd")?.textContent.trim(),
@@ -105,7 +110,8 @@ async function getData() {
   });
 
   await page.goto(
-    "https://www.google.com/maps/search/restaurants/@33.6080132,73.0178477,11z",
+    `https://www.google.com/maps/search/
+    ${city.type}/@${city.lat},${city.lng},11z`,
     {
       waitUntil: "domcontentloaded",
       timeout: 60000,
@@ -114,24 +120,27 @@ async function getData() {
 
   await sleep(5000);
 
-  // data = await scrollPage(page, ".miFGmb", 2);
   data = await extractItems(page);
-  console.log(data);
-  await browser.close();
+
+  // data = await scrollPage(page, ".miFGmb", 2);
+
+  await sleep(10000);
+  browser.close();
+  // console.log(data);
 }
 
-function trying() {
-  try {
-    getData();
-  } catch (e) {
-    err = e.message;
-  }
-}
+// POST Endpoint
 
-app.get("/", (request, response) => {
-  response.send("API Called");
+app.post("/sending", (req, res) => {
+  city = req.body;
+
+  getData();
+
+  res.send({ city });
 });
 
+// GET Endpoint
+
 app.get("/data", (request, response) => {
-  response.send(trying());
+  response.send(data);
 });

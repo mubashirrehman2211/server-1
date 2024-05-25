@@ -9,15 +9,7 @@ const puppeteer = require("puppeteer");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-let data = [];
-
-let city = {};
-
 const PORT = process.env.PORT || 5555;
-
-app.listen(PORT, () => {
-  console.log("Server Listening on PORT:", PORT);
-});
 
 async function extractItems(page) {
   let maps_data = await page.evaluate(() => {
@@ -97,50 +89,51 @@ async function scrollPage(page, scrollContainer, itemTargetCount) {
   return items;
 }
 
-async function getData() {
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-  await page.setExtraHTTPHeaders({
-    "User-Agent":
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4882.194 Safari/537.36",
-  });
-  await page.setViewport({
-    width: 1300,
-    height: 900,
-  });
+async function puppeteerLogic() {}
 
-  await page.goto(
-    `https://www.google.com/maps/search/
-    ${city.type}/@${city.lat},${city.lng},11z`,
-    {
-      waitUntil: "domcontentloaded",
-      timeout: 60000,
-    }
-  );
-
-  await sleep(5000);
-
-  data = await extractItems(page);
-
-  // data = await scrollPage(page, ".miFGmb", 2);
-
-  await sleep(10000);
-  browser.close();
-  // console.log(data);
-}
+app.listen(PORT, () => {
+  console.log("Server Listening on PORT:", PORT);
+});
 
 // POST Endpoint
 
-app.post("/sending", (req, res) => {
-  city = req.body;
+app.post("/sending", async (req, res) => {
+  let city = req.body;
 
-  getData();
+  try {
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ["--disabled-setuid-sandbox", "--no-sandbox"],
+    });
 
-  res.send({ city });
+    const page = await browser.newPage();
+    await page.setExtraHTTPHeaders({
+      "User-Agent":
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4882.194 Safari/537.36",
+    });
+
+    await page.goto(
+      `https://www.google.com/maps/search/${city.type}/@${city.lat},${city.lng},12z/data=!3m1!4b1`,
+      {
+        waitUntil: "domcontentloaded",
+        timeout: 60000,
+      }
+    );
+
+    let data = await scrollPage(page, ".m6QErb[aria-label]", 2);
+
+    console.log(data);
+
+    await browser.close();
+
+    res.send(data);
+  } catch (err) {
+    res.status(400).json({ err: "Data Not Found" });
+  }
 });
 
 // GET Endpoint
 
-app.get("/data", (request, response) => {
-  response.send(data);
-});
+// app.get("/data", (request, response) => {
+//   response.send(data);
+// });

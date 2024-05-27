@@ -89,8 +89,6 @@ async function scrollPage(page, scrollContainer, itemTargetCount) {
   return items;
 }
 
-async function puppeteerLogic() {}
-
 app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
 });
@@ -120,7 +118,9 @@ app.post("/sending", async (req, res) => {
       }
     );
 
-    let data = await scrollPage(page, ".m6QErb[aria-label]", 2);
+    await sleep(5000);
+
+    let data = await scrollPage(page, ".m6QErb[aria-label]", 7);
 
     console.log(data);
 

@@ -118,7 +118,7 @@ app.post("/sending", async (req, res) => {
       }
     );
 
-    await sleep(5000);
+    await sleep(6000);
 
     let data = await scrollPage(page, ".m6QErb[aria-label]", 7);
 

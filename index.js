@@ -128,7 +128,7 @@ app.post("/sending", async (req, res) => {
 
     res.send(data);
   } catch (err) {
-    res.status(400).json({ err: "Data Not Found" });
+    res.status(400).json({ err: "Data Not Found, please try again" });
   }
 });
 
